@@ -4,7 +4,7 @@ the db table and the db columns that can be consistently used all over the proje
 There should be a nested class here for each table in the database (just one in the current case)
 This class has the added benefit of documenting the db schema
  */
-package edu.monash.fit2081.db.provider;
+package com.mnov23.gestures.provider;
 
 import android.net.Uri;
 

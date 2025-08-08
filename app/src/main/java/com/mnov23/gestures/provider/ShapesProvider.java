@@ -1,4 +1,4 @@
-package edu.monash.fit2081.db.provider;
+package com.mnov23.gestures.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

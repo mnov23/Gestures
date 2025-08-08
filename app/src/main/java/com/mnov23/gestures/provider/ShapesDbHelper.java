@@ -8,7 +8,7 @@ including
     returning a cursor that can access all the existing shape records in the database's only table (shapes)
 */
 
-package edu.monash.fit2081.db.provider;
+package com.mnov23.gestures.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
