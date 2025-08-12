@@ -1,0 +1,26 @@
+// include ':app'
+// old Gradle build from 2017, version 2 something something...
+
+
+// manually added code to update Gradle
+// @mnov23
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+rootProject.name = "Gestures"
+include(":app")

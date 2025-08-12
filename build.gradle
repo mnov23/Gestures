@@ -1,0 +1,72 @@
+// Root-level build.gradle file
+/* supposedly this build.gradle will run without issues as I try to run the Gradle script */
+/* this file is a mess!   */
+plugins {
+    id "com.android.application" version "8.4.0" apply false
+}
+
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+
+
+
+/*   old build.gradle file was giving me issues at 
+line --
+buildscript {
+    repositories {
+        google()
+		
+so I rage quit and consulted a witch doctor named "ChatGPT" to help me out.
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+/* plugins {
+    id "com.android.application" version "8.4.0" apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+*/
+
+
+
+
+// Top-level build file, redone to ensure Gradle script runs.
+// @mnov23 with the help of ChatGPT... If I'm being honest ChatGPT did all the heavy lifting job...
+/*
+plugins {
+    id "com.android.application" version "8.4.0" apply false
+}
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+*/

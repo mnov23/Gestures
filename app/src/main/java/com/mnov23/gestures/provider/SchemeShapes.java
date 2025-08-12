@@ -10,7 +10,7 @@ import android.net.Uri;
 
 public class SchemeShapes {
     // Name of the Content Provider, use package name by convention so that it's unique on device
-    public static final String CONTENT_AUTHORITY = "edu.monash.fit2081.db.provider";
+    public static final String CONTENT_AUTHORITY = "com.mnov23.gestures.provider";
 
     // A path that points to the version table
     public static final String PATH_VERSION = "shapes";
@@ -25,10 +25,10 @@ public class SchemeShapes {
 
         // Use MIME type prefix android.cursor.dir/ for returning multiple items
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/edu.monash.fit2081.db.provider";
+                "vnd.android.cursor.dir/com.mnov23.gestures.provider";
         // Use MIME type prefix android.cursor.item/ for returning a single item
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/edu.monash.fit2081.db.provider";
+                "vnd.android.cursor.item/com.mnov23.gestures.provider";
 
 
         //Table name

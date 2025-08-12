@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Motion detection">
+        <menu>
+            <item
+                android:id="@+id/nav_up"
+                android:icon="@android:drawable/arrow_up_float"
+                android:title="Delete shapes" />
+            <item
+                android:id="@+id/nav_down"
+                android:icon="@android:drawable/arrow_down_float"
+                android:title="Cycle through colours" />
+        </menu>
+    </item>
+
+</menu>
