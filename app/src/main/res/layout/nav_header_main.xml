@@ -25,13 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Are you tired of the traditional approach?"
+        android:text="Are you tired of the traditional approach? Very UnOrthodox!"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fear not. This useless feature will not bring any innovations... Ha-ha-ha-ha!" />
+        android:text="Fear not. This useless feature will not bring any innovations... Ha-ha-ha-ha! Because I am incapable of inventing. I only steal!" />
 
 </LinearLayout>

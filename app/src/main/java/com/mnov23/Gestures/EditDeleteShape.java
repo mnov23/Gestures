@@ -1,17 +1,24 @@
-package com.mnov23.gestures;
+package com.mnov23.Gestures;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+// decrepit. like an old man crapping his pants. upon being forced to read an anti-communist manifesto against his wishes
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.LoaderManager;
+//import android.support.v4.content.CursorLoader;
+//import android.support.v4.content.Loader;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
+// cont.
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.mnov23.gestures.provider.SchemeShapes;
+import com.mnov23.Gestures.provider.SchemeShapes;
 
 /**
  * A simple {@link Fragment} subclass.
