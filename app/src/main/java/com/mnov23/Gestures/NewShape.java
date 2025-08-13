@@ -1,13 +1,21 @@
-package com.mnov23.gestures;
+package com.mnov23.Gestures;
 
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
+// deprecated libraries
+//import android.support.annotation.ColorInt;
+//import android.support.design.widget.FloatingActionButton;
+//import android.support.v4.app.Fragment;
+//import android.support.v4.content.ContextCompat;
+import androidx.annotation.ColorInt;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+// cont.
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +27,18 @@ import android.widget.Toast;
 
 import com.thebluealliance.spectrum.SpectrumDialog;
 
-import com.mnov23.gestures.provider.SchemeShapes;
+import com.mnov23.Gestures.provider.SchemeShapes;
 
-public class EditShape extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class NewShape extends Fragment {
+
+
+    public NewShape() {
+        // Required empty public constructor
+    }
+
     private TextView width_label;
     private EditText width_value;
 
@@ -37,118 +54,102 @@ public class EditShape extends Fragment {
     private EditText borderValue;
 
     private FloatingActionButton colorBtn;
-    private int selectedColor;
 
-    private String idStr;
-    private String xValueStr;
-    private String yValueStr;
-    private String borderValueStr;
-    private String radiusValueStr;
-    private String widthValueStr;
-    private String heightValueStr;
-    private String colorStr;
-    private String typeStr;
-
-    public EditShape() {
-        // Required empty public constructor
-    }
+    private String shapeType = "";
+    private int selectedColor = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_edit_shape, container, false);
-        v.findViewById(R.id.update_radio_circle).setOnClickListener(clickListener);
-        v.findViewById(R.id.update_radio_rectangle).setOnClickListener(clickListener);
 
-        FloatingActionButton editShapeBtn = (FloatingActionButton) v.findViewById(R.id.update_shape_btn);
+        View v = inflater.inflate(R.layout.fragment_new_shape, container, false);
 
-        Bundle myBundle = this.getArguments();
+        v.findViewById(R.id.radio_circle).setOnClickListener(clickListener);
+        v.findViewById(R.id.radio_rectangle).setOnClickListener(clickListener);
 
-        idStr = myBundle.getString("id");
-        widthValueStr = myBundle.getString("width");
-        heightValueStr = myBundle.getString("height");
-        xValueStr = myBundle.getString("x");
-        yValueStr = myBundle.getString("y");
-        borderValueStr = myBundle.getString("boarderWidth");
-        radiusValueStr = myBundle.getString("radius");
-        radiusValueStr = myBundle.getString("radius");
-        colorStr = myBundle.getString("color");
-        selectedColor = Integer.parseInt(colorStr);
-        typeStr = myBundle.getString("type");
+        FloatingActionButton addNewShapeBtn = (FloatingActionButton) v.findViewById(R.id.add_new_shape_btn);
+        width_label = ((TextView) v.findViewById(R.id.width_label));
+        width_value = ((EditText) v.findViewById(R.id.width_value));
 
-        if (typeStr.equals("Circle")) {
-            ((RadioButton) v.findViewById(R.id.update_radio_circle)).setChecked(true);
+        height_label = ((TextView) v.findViewById(R.id.height_label));
+        height_value = ((EditText) v.findViewById(R.id.height_value));
 
-        } else {
-            ((RadioButton) v.findViewById(R.id.update_radio_rectangle)).setChecked(true);
+
+        radius_label = ((TextView) v.findViewById(R.id.radius_label));
+        radius_value = ((EditText) v.findViewById(R.id.radius_value));
+
+        xValue = (EditText) v.findViewById(R.id.x_value);
+        yValue = (EditText) v.findViewById(R.id.y_value);
+        borderValue = (EditText) v.findViewById(R.id.border_value);
+        colorBtn = (FloatingActionButton) v.findViewById(R.id.selected_color);
+        if (selectedColor == -1) {
+            selectedColor = ContextCompat.getColor(getContext(), R.color.md_blue_500);
+            // add to Shared Preferences to be used later by the viewshapes
+            getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().putInt("selectColor", selectedColor).apply();
+
         }
-
-
-        width_label = ((TextView) v.findViewById(R.id.update_width_label));
-        width_value = ((EditText) v.findViewById(R.id.update_width_value));
-        width_value.setText(widthValueStr);
-
-        height_label = ((TextView) v.findViewById(R.id.update_height_label));
-        height_value = ((EditText) v.findViewById(R.id.update_height_value));
-        height_value.setText(heightValueStr);
-
-        radius_label = ((TextView) v.findViewById(R.id.update_radius_label));
-        radius_value = ((EditText) v.findViewById(R.id.update_radius_value));
-        radius_value.setText(radiusValueStr);
-
-        xValue = (EditText) v.findViewById(R.id.update_x_value);
-        xValue.setText(xValueStr);
-
-        yValue = (EditText) v.findViewById(R.id.update_y_value);
-        yValue.setText(yValueStr);
-
-        borderValue = (EditText) v.findViewById(R.id.update_border_value);
-        borderValue.setText(borderValueStr);
-
-        colorBtn = (FloatingActionButton) v.findViewById(R.id.update_selected_color);
-        //colorBtn.setBackgroundColor(Integer.parseInt(colorStr));
         colorBtn.setBackgroundTintList(ColorStateList.valueOf(selectedColor));
-
 
         colorBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showSelectColor(v);
             }
         });
-        if (((RadioButton) v.findViewById(R.id.update_radio_circle)).isChecked())
-            showHide(R.id.update_radio_circle);
-        else
-            showHide(R.id.update_radio_rectangle);
-
-        editShapeBtn.setOnClickListener(new View.OnClickListener() {
+        addNewShapeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                updateShape(v);
+                newShape(v);
             }
         });
 
+        if (shapeType.equals("")) {
+            ((RadioButton) v.findViewById(R.id.radio_circle)).setChecked(true);
+            shapeType = "Circle";
+        }
+        if (((RadioButton) v.findViewById(R.id.radio_circle)).isChecked())
+            showHide(R.id.radio_circle);
+        else
+            showHide(R.id.radio_rectangle);
 
-        // Return the layout for this fragment
         return v;
     }
 
-    public void updateShape(View view) {
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (shapeType.equals("")) {
+            ((RadioButton) getActivity().findViewById(R.id.radio_circle)).setChecked(true);
+            shapeType = "Circle";
+        }
+        if (((RadioButton) getActivity().findViewById(R.id.radio_circle)).isChecked())
+            showHide(R.id.radio_circle);
+        else
+            showHide(R.id.radio_rectangle);
+    }
+
+    public void newShape(View view) {
+
         ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
+
+
         int xValueInt = Integer.parseInt(xValue.getText().toString());
         int yValueInt = Integer.parseInt(yValue.getText().toString());
         int borderValueInt = Integer.parseInt(borderValue.getText().toString());
+
         int radiusValueInt = 0;
-
-
         if (!TextUtils.isEmpty(radius_value.getText().toString()))
             radiusValueInt = Integer.parseInt(radius_value.getText().toString());
+
         int widthValueInt = 0;
         if (!TextUtils.isEmpty(width_value.getText().toString()))
             widthValueInt = Integer.parseInt(width_value.getText().toString());
+
         int heightValueInt = 0;
         if (!TextUtils.isEmpty(height_value.getText().toString()))
             heightValueInt = Integer.parseInt(height_value.getText().toString());
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(SchemeShapes.Shape.SHAPE_TYPE, typeStr);
+        contentValues.put(SchemeShapes.Shape.SHAPE_TYPE, shapeType);
         contentValues.put(SchemeShapes.Shape.SHAPE_X, xValueInt);
         contentValues.put(SchemeShapes.Shape.SHAPE_Y, yValueInt);
         contentValues.put(SchemeShapes.Shape.SHAPE_RADIUS, radiusValueInt);
@@ -157,14 +158,12 @@ public class EditShape extends Fragment {
         contentValues.put(SchemeShapes.Shape.SHAPE_BORDER_THICKNESS, borderValueInt);
         contentValues.put(SchemeShapes.Shape.SHAPE_COLOR, selectedColor);
 
-        resolver.update(SchemeShapes.Shape.CONTENT_URI, contentValues, "_id=" + idStr, null);
-
+        resolver.insert(SchemeShapes.Shape.CONTENT_URI, contentValues);
     }
-
 
     public void showHide(int id) {
         switch (id) {
-            case R.id.update_radio_circle:
+            case R.id.radio_circle:
                 width_label.setVisibility(View.INVISIBLE);
                 width_value.setVisibility(View.INVISIBLE);
 
@@ -175,9 +174,8 @@ public class EditShape extends Fragment {
                 radius_label.setVisibility(View.VISIBLE);
                 radius_value.setVisibility(View.VISIBLE);
 
-
                 break;
-            case R.id.update_radio_rectangle:
+            case R.id.radio_rectangle:
                 radius_label.setVisibility(View.INVISIBLE);
                 radius_value.setVisibility(View.INVISIBLE);
                 width_label.setVisibility(View.VISIBLE);
@@ -186,27 +184,27 @@ public class EditShape extends Fragment {
                 height_label.setVisibility(View.VISIBLE);
                 height_value.setVisibility(View.VISIBLE);
 
-
                 break;
         }
     }
 
+
     View.OnClickListener clickListener = new View.OnClickListener() {
         public void onClick(View view) {
-            // Is the button checked?
+            // Is the button now checked?
             boolean checked = ((RadioButton) view).isChecked();
 
             // Check which radio button was clicked
             switch (view.getId()) {
-                case R.id.update_radio_circle:
+                case R.id.radio_circle:
                     if (checked)
-                        typeStr = "Circle";
-                    showHide(R.id.update_radio_circle);
+                        shapeType = "Circle";
+                    showHide(R.id.radio_circle);
                     break;
-                case R.id.update_radio_rectangle:
+                case R.id.radio_rectangle:
                     if (checked)
-                        typeStr = "Rectangle";
-                    showHide(R.id.update_radio_rectangle);
+                        shapeType = "Rectangle";
+                    showHide(R.id.radio_rectangle);
 
                     break;
             }
@@ -225,6 +223,7 @@ public class EditShape extends Fragment {
                     public void onColorSelected(boolean positiveResult, @ColorInt int color) {
                         if (positiveResult) {
                             selectedColor = color;
+                            //colorBtn.setBackgroundColor(selectedColor);
                             colorBtn.setBackgroundTintList(ColorStateList.valueOf(selectedColor));
                         } else {
                             Toast.makeText(getContext(), "Dialog cancelled", Toast.LENGTH_SHORT).show();
@@ -232,7 +231,7 @@ public class EditShape extends Fragment {
                     }
                 }).build().show(getFragmentManager(), "dialog_demo_1");
     }
+
+
 }
-
-
 

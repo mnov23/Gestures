@@ -1,11 +1,15 @@
-package com.mnov23.gestures;
+package com.mnov23.Gestures;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+// deprecated libraries
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+// cont.
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +17,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.mnov23.gestures.provider.SchemeShapes;
+import com.mnov23.Gestures.provider.SchemeShapes;
 
 
 public class    ItemCursorAdapter extends CursorAdapter {

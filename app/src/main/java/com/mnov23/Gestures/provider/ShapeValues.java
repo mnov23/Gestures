@@ -3,7 +3,7 @@ This class carries all the instance variable values about a shape instance (rect
 It allows us to create and pass around all this data using a single object reference
 rather than manipulating the instance variables one by one
  */
-package com.mnov23.gestures.provider;
+package com.mnov23.Gestures.provider;
 
 public class ShapeValues {
     private int id;
