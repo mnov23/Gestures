@@ -1,7 +1,7 @@
 /* launch activity */
 
-package com.mnov23.gestures;
-
+package com.mnov23.Gestures;
+/* outdated library
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Point;
@@ -20,10 +20,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+ */
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Point;
+import android.os.Bundle;
+
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.thebluealliance.spectrum.SpectrumDialog;
 
-import com.mnov23.gestures.provider.SchemeShapes;
+import com.mnov23.Gestures.provider.SchemeShapes;
 
 public class MainActivity extends AppCompatActivity {
 

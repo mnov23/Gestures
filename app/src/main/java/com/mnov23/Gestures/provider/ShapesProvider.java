@@ -1,4 +1,4 @@
-package com.mnov23.gestures.provider;
+package com.mnov23.Gestures.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/content_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context="edu.monash.fit2081.db.MainActivity"
-                tools:showIn="@layout/app_bar_main">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.mnov23.Gestures.MainActivity"
+    tools:showIn="@layout/app_bar_main">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@+id/fragment_top"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:background="@drawable/fragment_border"
-        />
+    <!-- android:layout_height="wrap_content" something was changed here and there was an "important" comment. See commit changes. -->
+    <FrameLayout
+        android:id="@+id/fragment_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fragment_border" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@+id/fragment_bottom"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:layout_below="@id/fragment_top"
-                 android:background="@drawable/fragment_border"
-        />
-
+    <FrameLayout
+        android:id="@+id/fragment_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fragment_top"
+        android:background="@drawable/fragment_border" />
 
 </RelativeLayout>
+
+
+    <!-- decrepit. and lame.
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/content_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:context="com.mnov23.Gestures.MainActivity"
+                    tools:showIn="@layout/app_bar_main">
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:id="@+id/fragment_top"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:background="@drawable/fragment_border"
+            />
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:id="@+id/fragment_bottom"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_below="@id/fragment_top"
+                     android:background="@drawable/fragment_border"
+            />
+
+
+    </RelativeLayout>
+    -->

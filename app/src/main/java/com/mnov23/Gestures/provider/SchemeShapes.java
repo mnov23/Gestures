@@ -4,13 +4,13 @@ the db table and the db columns that can be consistently used all over the proje
 There should be a nested class here for each table in the database (just one in the current case)
 This class has the added benefit of documenting the db schema
  */
-package com.mnov23.gestures.provider;
+package com.mnov23.Gestures.provider;
 
 import android.net.Uri;
 
 public class SchemeShapes {
     // Name of the Content Provider, use package name by convention so that it's unique on device
-    public static final String CONTENT_AUTHORITY = "com.mnov23.gestures.provider";
+    public static final String CONTENT_AUTHORITY = "com.mnov23.Gestures.provider";
 
     // A path that points to the version table
     public static final String PATH_VERSION = "shapes";
@@ -25,10 +25,10 @@ public class SchemeShapes {
 
         // Use MIME type prefix android.cursor.dir/ for returning multiple items
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/com.mnov23.gestures.provider";
+                "vnd.android.cursor.dir/com.mnov23.Gestures.provider";
         // Use MIME type prefix android.cursor.item/ for returning a single item
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/com.mnov23.gestures.provider";
+                "vnd.android.cursor.item/com.mnov23.Gestures.provider";
 
 
         //Table name
