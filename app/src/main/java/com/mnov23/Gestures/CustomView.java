@@ -4,10 +4,12 @@ A View's (or View's sub class) Canvas is passed to you in its onDraw(Canvas canv
 We should never call a View's onDraw rather we invalidate the View (e.g. myView.invalidate())
 This instructs Android to execute onDraw at its earliest convenience (if it's necessary)
  */
-package com.mnov23.gestures;
+package com.mnov23.Gestures;
 
-import android.support.v4.view.MotionEventCompat;
-import android.view.MotionEvent;
+// ChatGPT says I don't need "support.v4" and I can use android.view.MotionEvent directly for SDK 29
+//import android.support.v4.view.MotionEventCompat;
+
+// cont.
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,7 +17,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 //so we don't have to fully qualify references to members of this class we coded
-import com.mnov23.gestures.provider.ShapeValues;
+import com.mnov23.Gestures.provider.ShapeValues;
 
 public class CustomView extends View {
 

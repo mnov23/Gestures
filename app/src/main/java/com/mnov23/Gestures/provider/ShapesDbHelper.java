@@ -8,7 +8,7 @@ including
     returning a cursor that can access all the existing shape records in the database's only table (shapes)
 */
 
-package com.mnov23.gestures.provider;
+package com.mnov23.Gestures.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

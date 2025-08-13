@@ -1,7 +1,7 @@
 /*
 
  */
-package com.mnov23.gestures;
+package com.mnov23.Gestures;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -12,12 +12,20 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.MotionEventCompat;
-import android.util.Log;
+// deprecated
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.LoaderManager;
+//import android.support.v4.content.CursorLoader;
+//import android.support.v4.content.Loader;
+//import android.support.v4.view.MotionEventCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.core.view.MotionEventCompat;
+
+
+// cont.
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,10 +33,10 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mnov23.gestures.provider.SchemeShapes;
-import com.mnov23.gestures.provider.ShapeValues;
+import com.mnov23.Gestures.provider.SchemeShapes;
+import com.mnov23.Gestures.provider.ShapeValues;
 
-import static com.mnov23.gestures.provider.SchemeShapes.Shape;
+import static com.mnov23.Gestures.provider.SchemeShapes.Shape;
 
 /**
  * A simple {@link Fragment} subclass.
