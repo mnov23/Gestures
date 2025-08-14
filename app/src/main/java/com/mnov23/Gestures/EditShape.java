@@ -166,58 +166,103 @@ public class EditShape extends Fragment {
 
     }
 
-
+    // new if else statement
+    // this is so lame
+    // never in my entire life did I have to waste so much time to replace some stupid if else statement
+    // @mnov23 assisted by Claude ai due to his decrepit nature and rustiness after years of not coding...
     public void showHide(int id) {
-        switch (id) {
-            case R.id.update_radio_circle:
-                width_label.setVisibility(View.INVISIBLE);
-                width_value.setVisibility(View.INVISIBLE);
+        if (id == R.id.update_radio_circle) {
+            width_label.setVisibility(View.INVISIBLE);
+            width_value.setVisibility(View.INVISIBLE);
 
-                height_label.setVisibility(View.INVISIBLE);
-                height_value.setVisibility(View.INVISIBLE);
+            height_label.setVisibility(View.INVISIBLE);
+            height_value.setVisibility(View.INVISIBLE);
 
+            radius_label.setVisibility(View.VISIBLE);
+            radius_value.setVisibility(View.VISIBLE);
+        } else if (id == R.id.update_radio_rectangle) {
+            radius_label.setVisibility(View.INVISIBLE);
+            radius_value.setVisibility(View.INVISIBLE);
+            width_label.setVisibility(View.VISIBLE);
+            width_value.setVisibility(View.VISIBLE);
 
-                radius_label.setVisibility(View.VISIBLE);
-                radius_value.setVisibility(View.VISIBLE);
-
-
-                break;
-            case R.id.update_radio_rectangle:
-                radius_label.setVisibility(View.INVISIBLE);
-                radius_value.setVisibility(View.INVISIBLE);
-                width_label.setVisibility(View.VISIBLE);
-                width_value.setVisibility(View.VISIBLE);
-
-                height_label.setVisibility(View.VISIBLE);
-                height_value.setVisibility(View.VISIBLE);
-
-
-                break;
+            height_label.setVisibility(View.VISIBLE);
+            height_value.setVisibility(View.VISIBLE);
         }
     }
+    // replaced switch case
+//    public void showHide(int id) {
+//        switch (id) {
+//            case R.id.update_radio_circle:
+//                width_label.setVisibility(View.INVISIBLE);
+//                width_value.setVisibility(View.INVISIBLE);
+//
+//                height_label.setVisibility(View.INVISIBLE);
+//                height_value.setVisibility(View.INVISIBLE);
+//
+//
+//                radius_label.setVisibility(View.VISIBLE);
+//                radius_value.setVisibility(View.VISIBLE);
+//
+//
+//                break;
+//            case R.id.update_radio_rectangle:
+//                radius_label.setVisibility(View.INVISIBLE);
+//                radius_value.setVisibility(View.INVISIBLE);
+//                width_label.setVisibility(View.VISIBLE);
+//                width_value.setVisibility(View.VISIBLE);
+//
+//                height_label.setVisibility(View.VISIBLE);
+//                height_value.setVisibility(View.VISIBLE);
+//
+//
+//                break;
+//        }
+//    }
 
+    // new method.
+    // @mnov23 assited by Claude ai
+    // I'm merely appropriating Claude ai's recognition in it's stead.
     View.OnClickListener clickListener = new View.OnClickListener() {
         public void onClick(View view) {
             // Is the button checked?
             boolean checked = ((RadioButton) view).isChecked();
 
             // Check which radio button was clicked
-            switch (view.getId()) {
-                case R.id.update_radio_circle:
-                    if (checked)
-                        typeStr = "Circle";
-                    showHide(R.id.update_radio_circle);
-                    break;
-                case R.id.update_radio_rectangle:
-                    if (checked)
-                        typeStr = "Rectangle";
-                    showHide(R.id.update_radio_rectangle);
-
-                    break;
+            if (view.getId() == R.id.update_radio_circle) {
+                if (checked)
+                    typeStr = "Circle";
+                showHide(R.id.update_radio_circle);
+            } else if (view.getId() == R.id.update_radio_rectangle) {
+                if (checked)
+                    typeStr = "Rectangle";
+                showHide(R.id.update_radio_rectangle);
             }
             // do something here
         }
     };
+//    View.OnClickListener clickListener = new View.OnClickListener() {
+//        public void onClick(View view) {
+//            // Is the button checked?
+//            boolean checked = ((RadioButton) view).isChecked();
+//
+//            // Check which radio button was clicked
+//            switch (view.getId()) {
+//                case R.id.update_radio_circle:
+//                    if (checked)
+//                        typeStr = "Circle";
+//                    showHide(R.id.update_radio_circle);
+//                    break;
+//                case R.id.update_radio_rectangle:
+//                    if (checked)
+//                        typeStr = "Rectangle";
+//                    showHide(R.id.update_radio_rectangle);
+//
+//                    break;
+//            }
+//            // do something here
+//        }
+//    };
 
     public void showSelectColor(View v) {
         new SpectrumDialog.Builder(getContext())
