@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.mnov23.Gestures"
-        minSdk 21
+        minSdk 26     // outdated phones go into the trash where they belong.
         targetSdk 29  // targeting sdk 29, as intended
         versionCode 1
         versionName "1.0"
