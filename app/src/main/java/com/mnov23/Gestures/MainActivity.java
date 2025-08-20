@@ -1,31 +1,12 @@
 /* launch activity */
 
 package com.mnov23.Gestures;
-/* outdated library
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Point;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
- */
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Point;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -42,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.media.MediaPlayer;
+import android.media.AudioAttributes;
 
 import com.thebluealliance.spectrum.SpectrumDialog;
 
@@ -69,10 +52,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accelerometer;
     private Vibrator vibrator;
 
+
+    // Sound effects components
+    private SoundPool soundPool;
+    private int deleteSound1, deleteSound2, deleteSound3;
+    private int soundsLoaded = 0;
+    private boolean allSoundsReady = false;
+
+
     // Fling detection variables
-    private static final float FLING_THRESHOLD = 20.0f;  // Increased from 12.0f - requires stronger fling
+    private static final float FLING_THRESHOLD = 16.0f;  // Increased from 12.0f - requires stronger fling   // 20.0f too strong. currently 16.0f
     private static final float VERTICAL_TOLERANCE = 6.0f;  // Tolerance for vertical position
-    private static final long FLING_COOLDOWN = 2000;  // 2 seconds cooldown between flings
+    private static final long FLING_COOLDOWN = 1000;  // 2 seconds cooldown between flings  (2000), consider using 1 sec for audio overlap. (1000)
+    // currently FLING_COOLDOWN is set to 850, which is less than 1 second (1000) to ensure that the audio overlaps are possible. (up to 6 channels max).
+
     private long lastFlingTime = 0;
     private boolean isPhoneVertical = false;
 
@@ -86,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // sensors added
         initializeSensors();
+
+        // Initialize sound effects
+        initializeSounds();
 
         // to be used by delete shapes methods
         resolver = getApplicationContext().getContentResolver();
@@ -139,6 +135,48 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
            .commit();
     }
 
+    private void initializeSounds() {
+        // Create SoundPool for playing short sound effects with overlapping capability
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(6)  // Increased to allow overlapping "Sakujo" sounds
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        // Load all 3 "Sakujo" delete sound effects from res/raw/
+        // File durations: 1sec, 1sec, 2sec respectively
+        // - delete_cut1sec_soft.wav (1 second - Sakujo variation 1)
+        // - delete_cut1sec.wav (1 second - Sakujo variation 2)
+        // - delete_cut2sec_assassinate.wav (2 seconds - Sakujo variation 3)
+        try {
+            deleteSound1 = soundPool.load(this, R.raw.delete_cut1sec_soft, 1);
+            deleteSound2 = soundPool.load(this, R.raw.delete_cut1sec, 1);
+            deleteSound3 = soundPool.load(this, R.raw.delete_cut2sec_assassinate, 1);
+        } catch (Exception e) {
+            // If loading fails, we'll use MediaPlayer as backup
+            allSoundsReady = false;
+        }
+
+        // Track when all sounds are loaded
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                if (status == 0) {
+                    soundsLoaded++;
+                    if (soundsLoaded >= 3) {
+                        allSoundsReady = true;
+                    }
+                }
+            }
+        });
+    }
+
+
+
     // initialize newly added Sensors
     private void initializeSensors() {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -154,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
+
+    
 
     //OPTIONS MENU STUFF AND RELATED METHODS
     @Override
@@ -336,7 +376,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Delete all shapes using your existing method
         deleteLastShape();
 
-        // Optional: Add visual feedback or sound effects here
+        // Play delete sound effect
+        playDeleteSound();
     }
 
     // matching method to match ViewShapes new modified implementation of deleteLastShape()
@@ -369,6 +410,53 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             throw new IllegalArgumentException("Column '" + columnName + "' not found in cursor");
         }
         return index;
+    }
+
+    private void playDeleteSound() {
+        if (soundPool != null && allSoundsReady) {
+            // Randomly select one of the 3 "Sakujo" sounds
+            int randomSound = (int) (Math.random() * 3) + 1;
+            int selectedSound;
+
+            switch (randomSound) {
+                case 1:
+                    selectedSound = deleteSound1; // 1 sec Sakujo variation default
+                    break;
+                case 2:
+                    selectedSound = deleteSound2; // 1 sec Sakujo variation crappier ver.
+                    break;
+                case 3:
+                    selectedSound = deleteSound3; // 2 sec Sakujo variation w assassination fx
+                    break;
+                default:
+                    selectedSound = deleteSound1; // fallback default
+                    break;
+            }
+
+            // Play the randomly selected "Sakujo" sound
+            // With 1-second cooldown and maxStreams=6, sounds can overlap beautifully
+            // Edgy anime character can say "Sakujo" multiple times simultaneously for dramatic effect!
+            soundPool.play(selectedSound, 0.8f, 0.8f, 1, 0, 1.0f);
+
+        } else {
+            // Fallback: Use system notification sound if custom sounds not ready
+            try {
+                MediaPlayer mediaPlayer = MediaPlayer.create(this,
+                        android.provider.Settings.System.DEFAULT_NOTIFICATION_URI);
+                if (mediaPlayer != null) {
+                    mediaPlayer.setVolume(0.3f, 0.3f); // Lower volume
+                    mediaPlayer.start();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            mp.release();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                // Silent failure - no sound if both methods fail
+            }
+        }
     }
 
     /**
