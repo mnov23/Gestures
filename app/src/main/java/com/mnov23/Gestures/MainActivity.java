@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Check if fling threshold is exceeded and cooldown period has passed
         long currentTime = System.currentTimeMillis();
         if (flickAcceleration  > FLING_THRESHOLD &&
-                (currentTime - lastFlingTime) > FLING_COOLDOWN) {
+                (currentTime - lastFlingTime) > FLING_COOLDOWN) {   // check math consistency here. Flings are sometimes too frequent and the strength effort to achieve one proper full fling is too much!
 
             // Fling detected!
             onFlingDetected();
