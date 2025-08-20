@@ -13,6 +13,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //resConfigs "en", "xxhdpi", "xhdpi", "hdpi", "mdpi"    // causes project to not compile and complain about SDK build tools 21 or later. Consider using apk splits instead.
+        splits {
+            density {
+                enable true
+                reset()
+                include "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+            }
+        }
     }
 
     buildTypes {
