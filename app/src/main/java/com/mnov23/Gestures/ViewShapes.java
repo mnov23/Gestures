@@ -230,16 +230,26 @@ public class ViewShapes extends Fragment implements LoaderManager.LoaderCallback
         if (cursor.moveToFirst()) {
             do {
 
-                shapes[i] = new ShapeValues(cursor.getString(
-                    cursor.getColumnIndex(Shape.SHAPE_TYPE)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_X)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_Y)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_BORDER_THICKNESS)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_RADIUS)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)),
-                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_HEIGHT)),
-                    cursor.getString(cursor.getColumnIndex(Shape.SHAPE_COLOR))
+                shapes[i] = new ShapeValues(
+                        cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_TYPE)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_X)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_Y)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_BORDER_THICKNESS)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_RADIUS)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_WIDTH)),
+                        cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_HEIGHT)),
+                        cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_COLOR))
                 );
+//                shapes[i] = new ShapeValues(cursor.getString(
+//                    cursor.getColumnIndex(Shape.SHAPE_TYPE)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_X)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_Y)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_BORDER_THICKNESS)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_RADIUS)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)),
+//                    cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_HEIGHT)),
+//                    cursor.getString(cursor.getColumnIndex(Shape.SHAPE_COLOR))
+//                );
                 i++;
                 // do what ever you want here
             } while (cursor.moveToNext());
@@ -248,6 +258,14 @@ public class ViewShapes extends Fragment implements LoaderManager.LoaderCallback
         customView.numberShapes = cursor.getCount();
         customView.shapes = shapes;
         customView.invalidate();
+    }
+
+    private int getColumnIndexSafely(Cursor cursor, String columnName) {
+        int index = cursor.getColumnIndex(columnName);
+        if (index == -1) {
+            throw new IllegalArgumentException("Column '" + columnName + "' not found in cursor");
+        }
+        return index;
     }
 
     @Override
@@ -366,41 +384,49 @@ public class ViewShapes extends Fragment implements LoaderManager.LoaderCallback
         }
     }
 
-    private void deleteLastShape()
-    {
+    private void deleteLastShape() {
         Cursor cursor = getLastShape();
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
-            resolver.delete(SchemeShapes.Shape.CONTENT_URI, "_id=" + cursor.getInt(cursor.getColumnIndex(Shape.ID)), null);
+            int idIndex = getColumnIndexSafely(cursor, Shape.ID);
+            resolver.delete(SchemeShapes.Shape.CONTENT_URI, "_id=" + cursor.getInt(idIndex), null);
         }
     }
+//    private void deleteLastShape()
+//    {
+//        Cursor cursor = getLastShape();
+//        if (cursor.getCount() > 0) {
+//            cursor.moveToFirst();
+//            resolver.delete(SchemeShapes.Shape.CONTENT_URI, "_id=" + cursor.getInt(cursor.getColumnIndex(Shape.ID)), null);
+//        }
+//    }
 
     private void updateLastShape(int dir) {
         Cursor cursor = getLastShape();
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(SchemeShapes.Shape.SHAPE_TYPE, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_TYPE)));
-            contentValues.put(Shape.SHAPE_X, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_X)));
-            contentValues.put(Shape.SHAPE_Y, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_Y)));
-            contentValues.put(Shape.SHAPE_RADIUS, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_RADIUS)));
-            contentValues.put(Shape.SHAPE_WIDTH, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)));
-            contentValues.put(Shape.SHAPE_HEIGHT, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_HEIGHT)));
-            contentValues.put(SchemeShapes.Shape.SHAPE_BORDER_THICKNESS, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_BORDER_THICKNESS)));
+            contentValues.put(Shape.SHAPE_TYPE, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_TYPE)));
+            contentValues.put(Shape.SHAPE_X, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_X)));
+            contentValues.put(Shape.SHAPE_Y, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_Y)));
+            contentValues.put(Shape.SHAPE_RADIUS, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_RADIUS)));
+            contentValues.put(Shape.SHAPE_WIDTH, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_WIDTH)));
+            contentValues.put(Shape.SHAPE_HEIGHT, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_HEIGHT)));
+            contentValues.put(Shape.SHAPE_BORDER_THICKNESS, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_BORDER_THICKNESS)));
 
             if(dir > 0) {
                 // change colour
-                contentValues.put(SchemeShapes.Shape.SHAPE_COLOR, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_COLOR)));
+                contentValues.put(Shape.SHAPE_COLOR, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_COLOR)));
                 // int selectedColor = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).getInt("selectColor", 0);
             }
             if(dir < 0 ) {
                 // change colour
-                contentValues.put(SchemeShapes.Shape.SHAPE_COLOR, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_COLOR)));
+                contentValues.put(Shape.SHAPE_COLOR, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_COLOR)));
                 // int selectedColor = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE).getInt("selectColor", 0);
 
             }
 
-            resolver.update(SchemeShapes.Shape.CONTENT_URI, contentValues, "_id=" + cursor.getInt(cursor.getColumnIndex(Shape.ID)), null);
+            resolver.update(Shape.CONTENT_URI, contentValues, "_id=" + cursor.getInt(getColumnIndexSafely(cursor, Shape.ID)), null);
         }
     }
 
@@ -409,45 +435,45 @@ public class ViewShapes extends Fragment implements LoaderManager.LoaderCallback
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = new ContentValues();
-            contentValues.put(SchemeShapes.Shape.SHAPE_TYPE, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_TYPE)));
+            contentValues.put(SchemeShapes.Shape.SHAPE_TYPE, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_TYPE)));
 
             if (x != -1) {
                 contentValues.put(Shape.SHAPE_X, x);
             }
             else
-                contentValues.put(Shape.SHAPE_X, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_X)));
+                contentValues.put(Shape.SHAPE_X, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_X)));
 
             if (y != -1)
                 contentValues.put(Shape.SHAPE_Y, y);
             else
-                contentValues.put(Shape.SHAPE_Y, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_Y)));
+                contentValues.put(Shape.SHAPE_Y, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_Y)));
 
             if (scaleFlag)
-                contentValues.put(Shape.SHAPE_RADIUS, (radius / 100.0) * cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_RADIUS)));
+                contentValues.put(Shape.SHAPE_RADIUS, (radius / 100.0) * cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_RADIUS)));
             else if (radius != -1)
                 contentValues.put(Shape.SHAPE_RADIUS, radius);
             else
 
-                contentValues.put(Shape.SHAPE_RADIUS, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_RADIUS)));
+                contentValues.put(Shape.SHAPE_RADIUS, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_RADIUS)));
 
 
             if (width != -1)
                 contentValues.put(Shape.SHAPE_WIDTH, width);
             else if (scaleFlag)
-                contentValues.put(Shape.SHAPE_WIDTH, (width / 100.0) * cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)));
+                contentValues.put(Shape.SHAPE_WIDTH, (width / 100.0) * cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_WIDTH)));
             else
-                contentValues.put(Shape.SHAPE_WIDTH, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)));
+                contentValues.put(Shape.SHAPE_WIDTH, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_WIDTH)));
 
             if (height != -1)
                 contentValues.put(Shape.SHAPE_HEIGHT, height);
             else if (scaleFlag)
-                contentValues.put(Shape.SHAPE_HEIGHT, (height / 100.0) * cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_WIDTH)));
+                contentValues.put(Shape.SHAPE_HEIGHT, (height / 100.0) * cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_WIDTH)));
             else
-                contentValues.put(Shape.SHAPE_HEIGHT, cursor.getInt(cursor.getColumnIndex(Shape.SHAPE_HEIGHT)));
+                contentValues.put(Shape.SHAPE_HEIGHT, cursor.getInt(getColumnIndexSafely(cursor, Shape.SHAPE_HEIGHT)));
 
-            contentValues.put(SchemeShapes.Shape.SHAPE_BORDER_THICKNESS, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_BORDER_THICKNESS)));
-            contentValues.put(SchemeShapes.Shape.SHAPE_COLOR, cursor.getString(cursor.getColumnIndex(Shape.SHAPE_COLOR)));
-            resolver.update(SchemeShapes.Shape.CONTENT_URI, contentValues, "_id=" + cursor.getInt(cursor.getColumnIndex(Shape.ID)), null);
+            contentValues.put(SchemeShapes.Shape.SHAPE_BORDER_THICKNESS, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_BORDER_THICKNESS)));
+            contentValues.put(SchemeShapes.Shape.SHAPE_COLOR, cursor.getString(getColumnIndexSafely(cursor, Shape.SHAPE_COLOR)));
+            resolver.update(SchemeShapes.Shape.CONTENT_URI, contentValues, "_id=" + cursor.getInt(getColumnIndexSafely(cursor,Shape.ID)), null);
         }
     }
 
