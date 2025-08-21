@@ -62,12 +62,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     // Fling detection variables
     private static final float FLING_THRESHOLD = 16.0f;  // Increased from 12.0f - requires stronger fling   // 20.0f too strong. currently 16.0f
-    private static final float VERTICAL_TOLERANCE = 6.0f;  // Tolerance for vertical position
+    private static final float VERTICAL_TOLERANCE = 8.5f;  // Tolerance for vertical position
     private static final long FLING_COOLDOWN = 1000;  // 2 seconds cooldown between flings  (2000), consider using 1 sec for audio overlap. (1000)
     // currently FLING_COOLDOWN is set to 850, which is less than 1 second (1000) to ensure that the audio overlaps are possible. (up to 6 channels max).
 
     private long lastFlingTime = 0;
     private boolean isPhoneVertical = false;
+    private boolean flingInProgress = false;
 
 
     @Override
@@ -353,12 +354,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // Check if fling threshold is exceeded and cooldown period has passed
         long currentTime = System.currentTimeMillis();
-        if (flickAcceleration  > FLING_THRESHOLD &&
-                (currentTime - lastFlingTime) > FLING_COOLDOWN) {   // check math consistency here. Flings are sometimes too frequent and the strength effort to achieve one proper full fling is too much!
+        if (flickAcceleration > FLING_THRESHOLD &&
+                (currentTime - lastFlingTime) > FLING_COOLDOWN &&
+                !flingInProgress) {   // check math consistency here. Flings are sometimes too frequent and the strength effort to achieve one proper full fling is too much!
 
             // Fling detected!
             onFlingDetected();
             lastFlingTime = currentTime;
+
+            // Reset flag after a short delay using Handler (non-blocking) instead of Thread.sleep()
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    flingInProgress = false;
+                }
+            }, 150);  // 150ms will do for now
         }
     }
 
