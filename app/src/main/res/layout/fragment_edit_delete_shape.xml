@@ -6,6 +6,7 @@
     tools:context="com.mnov23.Gestures.EditDeleteShape">
 
     <!-- TODO: Update blank fragment layout -->
+    <!-- I bear no responsibility if something broke in this file -->
 
     <ListView
         android:layout_width="match_parent"

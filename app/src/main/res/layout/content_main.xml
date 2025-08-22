@@ -11,6 +11,9 @@
     tools:showIn="@layout/app_bar_main">
 
     <!-- android:layout_height="wrap_content" something was changed here and there was an "important" comment. See commit changes. -->
+    <!-- I bear no responsibility if something broke in this file -->
+    <!-- for old, deprecated .xml code see change history -->
+
     <FrameLayout
         android:id="@+id/fragment_top"
         android:layout_width="match_parent"
@@ -22,38 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/fragment_top"
-        android:background="@drawable/fragment_border" />
+        android:background="@drawable/fragment_border"
+        tools:ignore="MissingConstraints"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
 
-
-    <!-- decrepit. and lame.
-    <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/content_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:context="com.mnov23.Gestures.MainActivity"
-                    tools:showIn="@layout/app_bar_main">
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                     android:id="@+id/fragment_top"
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:background="@drawable/fragment_border"
-            />
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                     android:id="@+id/fragment_bottom"
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:layout_below="@id/fragment_top"
-                     android:background="@drawable/fragment_border"
-            />
-
-
-    </RelativeLayout>
-    -->
